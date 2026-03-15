@@ -5,3 +5,4 @@ config.yaml
 credentials/
 output/
 assets/gameplay/
+.DS_Store
