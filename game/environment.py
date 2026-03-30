@@ -1,7 +1,7 @@
 import pygame
- 
+
 RESTITUTION = 0.75
- 
+
 class Environment:
     def __init__(self, width, height, cell_size=100):
         self.width     = width
@@ -9,20 +9,30 @@ class Environment:
         self.cell_size = cell_size
         self.screen    = pygame.display.set_mode((width, height))
         self.cells     = {}
- 
+
     def apply_boundaries(self, ball):
+        """Returns (hit, speed) so the game loop can fire events."""
+        hit   = False
+        speed = ball.speed
+
         if ball.x - ball.radius < 0:
             ball.x  = ball.radius
             ball.vx = abs(ball.vx) * RESTITUTION
+            hit     = True
         if ball.x + ball.radius > self.width:
             ball.x  = self.width - ball.radius
             ball.vx = -abs(ball.vx) * RESTITUTION
+            hit     = True
         if ball.y - ball.radius < 0:
             ball.y  = ball.radius
             ball.vy = abs(ball.vy) * RESTITUTION
+            hit     = True
         if ball.y + ball.radius > self.height:
             ball.y  = self.height - ball.radius
             ball.vy = -abs(ball.vy) * RESTITUTION
+            hit     = True
+
+        return hit, speed
 
     def clear_grid(self):
         self.cells = {}
